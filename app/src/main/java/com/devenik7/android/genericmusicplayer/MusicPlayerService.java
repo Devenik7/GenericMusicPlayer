@@ -72,6 +72,9 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
             case NotificationUtils.NOTIFICATION_SWIPED_ACTION:
                 closePlayer();
                 break;
+            case MusicPlayerUtils.INFO_REQUEST:
+                sendUpdateBroadcast();
+                break;
         }
 
         return START_NOT_STICKY;
@@ -98,6 +101,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
             player.pause();
             stopForeground(false);
             NotificationUtils.showPausedNotification(this, currentTrackTitle, currentTrackArtist);
+            sendUpdateBroadcast();
         }
     }
 
@@ -105,6 +109,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         if (player != null) {
             player.start();
             startForeground(NotificationUtils.FOREGROUND_NOTIFICATION_ID, NotificationUtils.playNotification(this, currentTrackTitle, currentTrackArtist));
+            sendUpdateBroadcast();
         }
     }
 
@@ -144,6 +149,16 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         onDestroy();
     }
 
+    private void sendUpdateBroadcast () {
+        // need to be called only in possible states due to usage of player properties
+        Intent intent = new Intent();
+        intent.setAction(MusicPlayerUtils.UPDATE_INFO_BROADCAST);
+        intent.putExtra(MusicEntry.MUSIC_TITLE, currentTrackTitle);
+        intent.putExtra(MusicEntry.MUSIC_ARTIST, currentTrackArtist);
+        intent.putExtra(MusicPlayerUtils.IS_PLAYING, player.isPlaying());
+        sendBroadcast(intent);
+    }
+
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         mediaPlayer.reset();
@@ -161,6 +176,7 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     public void onPrepared(MediaPlayer mediaPlayer) {
         player.start();
         startForeground(NotificationUtils.FOREGROUND_NOTIFICATION_ID, NotificationUtils.playNotification(this, currentTrackTitle, currentTrackArtist));
+        sendUpdateBroadcast();
     }
 
     @Override

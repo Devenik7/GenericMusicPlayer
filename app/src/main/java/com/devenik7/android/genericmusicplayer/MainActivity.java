@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.LoaderManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.Loader;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
@@ -15,16 +16,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.security.Permission;
 
-public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor>{
+public class MainActivity extends AppCompatActivity implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    ListView allMusicListView;
     final int GLOBAL_MUSIC_LOADER = 1;
     final int READ_EXTERNAL_STORAGE_REQUEST_CODE = 11;
+
+    ListView allMusicListView;
+    View playerStatusView;
     Cursor globalList;
 
     @Override
@@ -39,12 +46,39 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
                 startMusic(i);
             }
         });
+        playerStatusView = findViewById(R.id.player_status_view);
 
         if (checkForPermission()) {
             getAllMusicContent();
             checkAndStoreAllMusicContent();
         }
 
+        registerPlayerBroadcastReceiver();
+        requestInfoFromPlayerService();
+    }
+
+    private void registerPlayerBroadcastReceiver() {
+        IntentFilter filter = new IntentFilter(MusicPlayerUtils.UPDATE_INFO_BROADCAST);
+        registerReceiver(new PlayerBroadcastReceiver(), filter);
+    }
+
+    private void requestInfoFromPlayerService() {
+        Intent intent = new Intent(getApplicationContext(), MusicPlayerService.class);
+        intent.setAction(MusicPlayerUtils.INFO_REQUEST);
+        startService(intent);
+    }
+
+    public void receiveUpdateBroadcast(String title, String artist, boolean isPlaying) {
+        if (title != null) {
+            ((TextView) playerStatusView.findViewById(R.id.player_status_title_view)).setText(title.trim());
+            ((TextView) playerStatusView.findViewById(R.id.player_status_artist_view)).setText(artist.trim());
+            ImageView isPlayingView = playerStatusView.findViewById(R.id.player_status_image_view);
+            if (isPlaying)
+                isPlayingView.setImageResource(android.R.drawable.ic_media_pause);
+            else
+                isPlayingView.setImageResource(android.R.drawable.ic_media_play);
+            isPlayingView.setTag(isPlaying);
+        }
     }
 
     private void startMusic(int position) {
@@ -55,6 +89,18 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         intent.putExtra(PlayerContract.MusicEntry.MUSIC_ID, globalList.getInt(globalList.getColumnIndex(PlayerContract.MusicEntry.MUSIC_ID)));
         intent.putExtra(MusicPlayerUtils.POSITION_IN_LIST, position);
         startService(intent);
+    }
+
+    public void pauseMusic(View view) {
+        Object tag = view.getTag();
+        if (tag != null) {
+            Intent intent = new Intent(getApplicationContext(), MusicPlayerService.class);
+            if ((boolean) tag)
+                intent.setAction(MusicPlayerUtils.PAUSE_ACTION);
+            else
+                intent.setAction(MusicPlayerUtils.PLAY_ACTION);
+            startService(intent);
+        }
     }
 
     private void getAllMusicContent() {
@@ -68,8 +114,7 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
     private boolean checkForPermission() {
         if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             return true;
-        }
-        else {
+        } else {
             ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, READ_EXTERNAL_STORAGE_REQUEST_CODE);
             return false;
         }
@@ -110,4 +155,5 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
         }
     }
+
 }
