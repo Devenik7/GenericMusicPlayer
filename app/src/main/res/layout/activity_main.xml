@@ -18,9 +18,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:animateLayoutChanges="true"
         android:background="@android:color/white"
         android:clickable="true"
-        android:elevation="8dp"
+        android:elevation="16dp"
         android:orientation="horizontal"
         android:padding="16dp">
 
@@ -28,6 +29,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:animateLayoutChanges="true"
+            android:gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
@@ -45,7 +48,8 @@
                 android:layout_height="wrap_content"
                 android:clickable="true"
                 android:textColor="@color/colorPrimaryDark"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:visibility="gone" />
 
         </LinearLayout>
 
@@ -53,11 +57,11 @@
             android:id="@+id/player_status_image_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@android:drawable/ic_media_play"
-            android:tint="@color/colorPrimary"
             android:layout_gravity="center_vertical"
+            android:background="?attr/selectableItemBackgroundBorderless"
             android:onClick="pauseMusic"
-            android:background="?attr/selectableItemBackgroundBorderless"/>
+            android:src="@android:drawable/ic_media_play"
+            android:tint="@color/colorPrimary" />
 
     </LinearLayout>
 

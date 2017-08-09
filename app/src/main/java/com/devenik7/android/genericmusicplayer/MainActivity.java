@@ -32,6 +32,10 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     ListView allMusicListView;
     View playerStatusView;
+    TextView titleView;
+    TextView artistView;
+    ImageView isPlayingView;
+
     Cursor globalList;
 
     @Override
@@ -47,6 +51,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
         playerStatusView = findViewById(R.id.player_status_view);
+        titleView = playerStatusView.findViewById(R.id.player_status_title_view);
+        artistView = playerStatusView.findViewById(R.id.player_status_artist_view);
+        isPlayingView = playerStatusView.findViewById(R.id.player_status_image_view);
 
         if (checkForPermission()) {
             getAllMusicContent();
@@ -70,14 +77,28 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
 
     public void receiveUpdateBroadcast(String title, String artist, boolean isPlaying) {
         if (title != null) {
-            ((TextView) playerStatusView.findViewById(R.id.player_status_title_view)).setText(title.trim());
-            ((TextView) playerStatusView.findViewById(R.id.player_status_artist_view)).setText(artist.trim());
-            ImageView isPlayingView = playerStatusView.findViewById(R.id.player_status_image_view);
+            // the GONE and VISIBLE are for an animating effect
+            if (!titleView.getText().equals(title.trim()) || !artistView.getText().equals(artist.trim())) { // this condition so that it doesn't animate when pressing the button beside them
+                titleView.setVisibility(View.GONE);
+                artistView.setVisibility(View.GONE);
+                titleView.setText(title.trim());
+                titleView.setVisibility(View.VISIBLE);
+                if (artist != null) {
+                    artistView.setText(artist.trim());
+                    artistView.setVisibility(View.VISIBLE);
+                }
+            }
+
             if (isPlaying)
                 isPlayingView.setImageResource(android.R.drawable.ic_media_pause);
             else
                 isPlayingView.setImageResource(android.R.drawable.ic_media_play);
             isPlayingView.setTag(isPlaying);
+        }
+        else {
+            titleView.setText("Select a Song");
+            artistView.setVisibility(View.GONE);
+            isPlayingView.setTag(null);
         }
     }
 
