@@ -43,6 +43,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        startActivity(new Intent(this, testingCreatePlaylistActivity.class));
+        finish();
+
         allMusicListView = (ListView) findViewById(R.id.all_music_list_view);
         allMusicListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

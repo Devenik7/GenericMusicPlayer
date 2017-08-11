@@ -3,7 +3,6 @@ package com.devenik7.android.genericmusicplayer;
 import android.app.Service;
 import android.content.Intent;
 import android.database.Cursor;
-import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;

@@ -28,4 +28,19 @@ class PlayerContract {
         public final static int MUSIC_NEUTRAL = 0;
 
     }
+
+    static class PlaylistEntry implements BaseColumns {
+
+        final static String TABLE_NAME = "playlists";
+        final static String PLAYLIST_ID = BaseColumns._ID;
+        final static String PLAYLIST_NAME = "playlist_name";
+        final static String PLAYLIST_DESCRIPTION = "playlist_description";
+
+    }
+
+    static class MusicInPlaylistEntry implements BaseColumns {
+
+        final static String TABLE_NAME = "music_in_playlists";
+
+    }
 }
