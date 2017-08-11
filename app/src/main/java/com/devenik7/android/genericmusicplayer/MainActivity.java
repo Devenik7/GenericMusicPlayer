@@ -54,9 +54,9 @@ public class MainActivity extends AppCompatActivity implements LoaderManager.Loa
             }
         });
         playerStatusView = findViewById(R.id.player_status_view);
-        titleView = playerStatusView.findViewById(R.id.player_status_title_view);
-        artistView = playerStatusView.findViewById(R.id.player_status_artist_view);
-        isPlayingView = playerStatusView.findViewById(R.id.player_status_image_view);
+        titleView = (TextView) playerStatusView.findViewById(R.id.player_status_title_view);
+        artistView = (TextView) playerStatusView.findViewById(R.id.player_status_artist_view);
+        isPlayingView = (ImageView) playerStatusView.findViewById(R.id.player_status_image_view);
 
         if (checkForPermission()) {
             getAllMusicContent();
