@@ -6,12 +6,20 @@
     android:layout_height="match_parent"
     tools:context="com.devenik7.android.genericmusicplayer.MainActivity">
 
-    <ListView
-        android:id="@+id/all_music_list_view"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/main_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:paddingBottom="88dp" />
+        android:layout_height="wrap_content">
+
+        <android.support.v4.view.PagerTabStrip
+            android:id="@+id/main_pager_tab_strip"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:elevation="8dp"
+            android:padding="16dp" />
+
+    </android.support.v4.view.ViewPager>
 
     <LinearLayout
         android:id="@+id/player_status_view"
@@ -30,7 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:animateLayoutChanges="true"
-            android:gravity="center_vertical"
+            android:layout_gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView

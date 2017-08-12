@@ -19,8 +19,6 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".testingCreatePlaylistActivity" />
-
         <service
             android:name=".MusicPlayerService"
             android:exported="false" />

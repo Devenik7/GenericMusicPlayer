@@ -4,24 +4,18 @@
     android:layout_height="match_parent">
 
     <ListView
-        android:id="@+id/testing_list_view"
+        android:id="@+id/playlists_list_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <ImageView
-        android:id="@+id/empty_image"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/arrow_up_float"
-        android:visibility="gone"/>
-
     <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_playlist_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@android:drawable/ic_input_add"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        android:onClick="addNewPlaylist"/>
+        android:src="@android:drawable/ic_input_add"
+        android:tint="@android:color/white" />
 
 </RelativeLayout>

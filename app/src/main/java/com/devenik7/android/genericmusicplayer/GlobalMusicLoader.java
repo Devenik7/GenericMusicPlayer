@@ -12,9 +12,9 @@ import java.net.URI;
  * Created by nisha on 06-Aug-17.
  */
 
-public class GlobalMusicLoader extends AsyncTaskLoader<Cursor> {
+class GlobalMusicLoader extends android.support.v4.content.AsyncTaskLoader<Cursor> {
 
-    public GlobalMusicLoader(Context context) {
+    GlobalMusicLoader(Context context) {
         super(context);
     }
 
