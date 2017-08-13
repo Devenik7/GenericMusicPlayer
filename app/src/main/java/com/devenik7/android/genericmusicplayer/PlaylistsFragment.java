@@ -1,8 +1,9 @@
 package com.devenik7.android.genericmusicplayer;
 
+import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
@@ -20,9 +21,7 @@ import android.widget.TextView;
  * Created by nisha on 12-Aug-17.
  */
 
-public class PlaylistsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
-
-    private final int PLAYLISTS_LOADER = 123;
+public class PlaylistsFragment extends Fragment {
 
     ListView playlistsView;
     FloatingActionButton addPlayListButton;
@@ -38,7 +37,7 @@ public class PlaylistsFragment extends Fragment implements LoaderManager.LoaderC
         addPlayListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                addNewPlaylist();
+                showCreatePlaylistDialog();
             }
         });
         helper = new MusicDbHelper(getActivity());
@@ -60,28 +59,27 @@ public class PlaylistsFragment extends Fragment implements LoaderManager.LoaderC
     }
 
     private void setPlaylistContent() {
-        Cursor cursor = helper.getReadableDatabase().query(PlayerContract.PlaylistEntry.TABLE_NAME, PlaylistUtils.PLAYLIST_PROJECTION, null, null, null, null, null);
-        adapter.changeCursor(cursor);
-        adapter.notifyDataSetChanged();
+        AsyncTask task = new AsyncTask() {
+
+            @Nullable
+            @Override
+            protected Cursor doInBackground(Object[] params) {
+                return helper.getReadableDatabase().query(PlayerContract.PlaylistEntry.TABLE_NAME, PlaylistUtils.PLAYLIST_PROJECTION, null, null, null, null, null);
+            }
+
+            @Override
+            protected void onPostExecute(Object o) {
+                super.onPostExecute(o);
+                adapter.changeCursor((Cursor) o);
+                adapter.notifyDataSetChanged();
+            }
+        };
+        task.execute();
     }
 
-    public void addNewPlaylist() {
-        PlaylistUtils.addPlayList(helper, "something");
-        setPlaylistContent();
+    public void showCreatePlaylistDialog() {
+        CreatePlaylistDialogFragment dialogFragment = new CreatePlaylistDialogFragment();
+        dialogFragment.show(getActivity().getSupportFragmentManager(), "create_playlist_dialog");
     }
 
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle args) {
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
-
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> loader) {
-
-    }
 }

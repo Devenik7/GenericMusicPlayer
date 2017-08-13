@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
@@ -16,26 +17,33 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.astuetz.PagerSlidingTabStrip;
+
 public class MainActivity extends AppCompatActivity {
 
     final int READ_EXTERNAL_STORAGE_REQUEST_CODE = 11;
 
     ViewPager mainViewPager;
-    PagerTabStrip mainPagerTabStrip;
+    PagerSlidingTabStrip strip;
     View playerStatusView;
     TextView titleView;
     TextView artistView;
     ImageView isPlayingView;
+
+    MusicDbHelper helper;
+    PlayerBroadcastReceiver playerBroadcastReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        helper = new MusicDbHelper(this);
+
         setupUI();
 
         if (checkForPermission()) {
-            mainViewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+            setupPagerAndStrip();
         }
 
         registerPlayerBroadcastReceiver();
@@ -44,15 +52,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void setupUI() {
         mainViewPager = (ViewPager) findViewById(R.id.main_view_pager);
-        mainPagerTabStrip = (PagerTabStrip) findViewById(R.id.main_pager_tab_strip);
-        mainPagerTabStrip.setTextColor(0xffffffff);
-        mainPagerTabStrip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-        mainPagerTabStrip.setTabIndicatorColor(0xffffffff);
+        strip = (PagerSlidingTabStrip) findViewById(R.id.main_pager_strip);
 
         playerStatusView = findViewById(R.id.player_status_view);
         titleView = (TextView) playerStatusView.findViewById(R.id.player_status_title_view);
         artistView = (TextView) playerStatusView.findViewById(R.id.player_status_artist_view);
         isPlayingView = (ImageView) playerStatusView.findViewById(R.id.player_status_image_view);
+    }
+
+    private void setupPagerAndStrip() {
+        mainViewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+        strip.setViewPager(mainViewPager);
     }
 
     public boolean checkForPermission() {
@@ -65,8 +75,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void registerPlayerBroadcastReceiver() {
+        if (playerBroadcastReceiver == null)
+            playerBroadcastReceiver = new PlayerBroadcastReceiver();
         IntentFilter filter = new IntentFilter(MusicPlayerUtils.UPDATE_INFO_BROADCAST);
-        registerReceiver(new PlayerBroadcastReceiver(), filter);
+        registerReceiver(playerBroadcastReceiver, filter);
     }
 
     private void requestInfoFromPlayerService() {
@@ -101,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void pauseMusic(View view) {
+    public void pauseOrPlayMusic(View view) {
         Object tag = view.getTag();
         if (tag != null) {
             Intent intent = new Intent(getApplicationContext(), MusicPlayerService.class);
@@ -113,6 +125,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void createNewPlaylist(String title, String description) {
+        if (description.equals("")) {
+            PlaylistUtils.addPlayList(helper, title);
+        } else {
+            PlaylistUtils.addPlayList(helper, title, description);
+        }
+        setupPagerAndStrip();
+        mainViewPager.setCurrentItem(0);
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -120,11 +142,24 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case READ_EXTERNAL_STORAGE_REQUEST_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    mainViewPager.setAdapter(new MainPagerAdapter(getSupportFragmentManager()));
+                    setupPagerAndStrip();
                 }
             }
             break;
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        registerPlayerBroadcastReceiver();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        unregisterReceiver(playerBroadcastReceiver);
+    }
 }

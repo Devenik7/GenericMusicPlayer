@@ -6,18 +6,24 @@
     android:layout_height="match_parent"
     tools:context="com.devenik7.android.genericmusicplayer.MainActivity">
 
+    <com.astuetz.PagerSlidingTabStrip
+        android:id="@+id/main_pager_strip"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:background="@color/colorPrimary"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        app:pstsDividerColor="@android:color/transparent"
+        app:pstsIndicatorColor="@android:color/white"
+        app:pstsIndicatorHeight="2dp"
+        app:pstsShouldExpand="true"
+        app:pstsTabBackground="@drawable/tab_strip_background" />
+
     <android.support.v4.view.ViewPager
         android:id="@+id/main_view_pager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <android.support.v4.view.PagerTabStrip
-            android:id="@+id/main_pager_tab_strip"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary"
-            android:elevation="8dp"
-            android:padding="16dp" />
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_pager_strip">
 
     </android.support.v4.view.ViewPager>
 
@@ -36,9 +42,9 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
             android:layout_weight="1"
             android:animateLayoutChanges="true"
-            android:layout_gravity="center_vertical"
             android:orientation="vertical">
 
             <TextView
@@ -67,7 +73,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:onClick="pauseMusic"
+            android:onClick="pauseOrPlayMusic"
             android:src="@android:drawable/ic_media_play"
             android:tint="@color/colorPrimary" />
 

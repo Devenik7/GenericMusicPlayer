@@ -18,6 +18,8 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0: return new PlaylistsFragment();
             case 1: return new GlobalMusicFragment();
+            case 2: return new ArtistsFragment();
+            case 3: return new AlbumsFragment();
             default: return new GlobalMusicFragment();
         }
     }
@@ -27,12 +29,14 @@ public class MainPagerAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0: return "PLAYLISTS";
             case 1: return "ALL MUSIC";
-            default: return null;
+            case 2: return "ARTISTS";
+            case 3: return "ALBUMS";
+            default: return "ALL MUSIC";
         }
     }
 
     @Override
     public int getCount() {
-        return 2;
+        return 4;
     }
 }
