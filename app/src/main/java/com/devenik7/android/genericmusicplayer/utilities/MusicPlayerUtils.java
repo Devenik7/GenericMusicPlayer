@@ -1,6 +1,4 @@
-package com.devenik7.android.genericmusicplayer;
-
-import android.provider.MediaStore;
+package com.devenik7.android.genericmusicplayer.utilities;
 
 /**
  * Created by nisha on 06-Aug-17.

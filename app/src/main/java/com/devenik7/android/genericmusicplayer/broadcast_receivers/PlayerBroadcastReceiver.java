@@ -1,9 +1,13 @@
-package com.devenik7.android.genericmusicplayer;
+package com.devenik7.android.genericmusicplayer.broadcast_receivers;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
+
+import com.devenik7.android.genericmusicplayer.activities.MainActivity;
+import com.devenik7.android.genericmusicplayer.PlayerContract;
+import com.devenik7.android.genericmusicplayer.activities.PlaylistActivity;
+import com.devenik7.android.genericmusicplayer.utilities.MusicPlayerUtils;
 
 /**
  * Created by nisha on 09-Aug-17.

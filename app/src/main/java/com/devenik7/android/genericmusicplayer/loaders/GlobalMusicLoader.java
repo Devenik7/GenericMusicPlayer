@@ -1,20 +1,17 @@
-package com.devenik7.android.genericmusicplayer;
+package com.devenik7.android.genericmusicplayer.loaders;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
 
-import java.net.URI;
-
 /**
  * Created by nisha on 06-Aug-17.
  */
 
-class GlobalMusicLoader extends android.support.v4.content.AsyncTaskLoader<Cursor> {
+public class GlobalMusicLoader extends android.support.v4.content.AsyncTaskLoader<Cursor> {
 
-    GlobalMusicLoader(Context context) {
+    public GlobalMusicLoader(Context context) {
         super(context);
     }
 

@@ -7,7 +7,7 @@ import android.os.Parcelable;
  * Created by nisha on 06-Aug-17.
  */
 
-class Music implements Parcelable {
+public class Music implements Parcelable {
     private int id;
     private String title;
     private String artist;
@@ -17,7 +17,7 @@ class Music implements Parcelable {
     private int frequency;
     private int rating;
 
-    Music (int Id, String Title, String Artist, String Album, String DataPath, int Duration, int Frequency, int Rating) {
+    public Music (int Id, String Title, String Artist, String Album, String DataPath, int Duration, int Frequency, int Rating) {
         id = Id;
         title = Title;
         artist = Artist;
@@ -28,7 +28,7 @@ class Music implements Parcelable {
         rating = Rating;
     }
 
-    Music (int Id, String Title, String Artist, String Album, String DataPath, int Duration) {
+    public Music (int Id, String Title, String Artist, String Album, String DataPath, int Duration) {
         id = Id;
         title = Title;
         artist = Artist;

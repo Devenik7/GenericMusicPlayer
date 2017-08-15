@@ -4,6 +4,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 
+import com.devenik7.android.genericmusicplayer.main_fragments.AlbumsFragment;
+import com.devenik7.android.genericmusicplayer.main_fragments.ArtistsFragment;
+import com.devenik7.android.genericmusicplayer.main_fragments.GlobalMusicFragment;
+import com.devenik7.android.genericmusicplayer.main_fragments.PlaylistsFragment;
+
 /**
  * Created by nisha on 12-Aug-17.
  */

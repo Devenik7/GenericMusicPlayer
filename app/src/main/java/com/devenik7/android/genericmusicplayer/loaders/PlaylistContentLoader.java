@@ -1,20 +1,23 @@
-package com.devenik7.android.genericmusicplayer;
+package com.devenik7.android.genericmusicplayer.loaders;
 
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v4.content.AsyncTaskLoader;
+
+import com.devenik7.android.genericmusicplayer.MusicDbHelper;
+import com.devenik7.android.genericmusicplayer.PlayerContract;
 import com.devenik7.android.genericmusicplayer.PlayerContract.MusicEntry;
 
 /**
  * Created by nisha on 14-Aug-17.
  */
 
-class PlaylistContentLoader extends AsyncTaskLoader<Cursor> {
+public class PlaylistContentLoader extends AsyncTaskLoader<Cursor> {
 
     private String playlistName;
 
-    PlaylistContentLoader(Context context, String name) {
+    public PlaylistContentLoader(Context context, String name) {
         super(context);
 
         playlistName = name;

@@ -1,4 +1,4 @@
-package com.devenik7.android.genericmusicplayer;
+package com.devenik7.android.genericmusicplayer.activities;
 
 import android.Manifest;
 import android.content.Intent;
@@ -7,20 +7,22 @@ import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
-
-import java.util.ArrayList;
+import com.devenik7.android.genericmusicplayer.broadcast_receivers.PlayerBroadcastReceiver;
+import com.devenik7.android.genericmusicplayer.MainPagerAdapter;
+import com.devenik7.android.genericmusicplayer.MusicDbHelper;
+import com.devenik7.android.genericmusicplayer.MusicPlayerService;
+import com.devenik7.android.genericmusicplayer.R;
+import com.devenik7.android.genericmusicplayer.utilities.MusicPlayerUtils;
+import com.devenik7.android.genericmusicplayer.utilities.PlaylistUtils;
 
 public class MainActivity extends AppCompatActivity {
 

@@ -1,6 +1,5 @@
-package com.devenik7.android.genericmusicplayer;
+package com.devenik7.android.genericmusicplayer.main_fragments;
 
-import android.content.AsyncTaskLoader;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,8 +8,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +15,13 @@ import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import com.devenik7.android.genericmusicplayer.CreatePlaylistDialogFragment;
+import com.devenik7.android.genericmusicplayer.MusicDbHelper;
+import com.devenik7.android.genericmusicplayer.PlayerContract;
+import com.devenik7.android.genericmusicplayer.activities.PlaylistActivity;
+import com.devenik7.android.genericmusicplayer.R;
+import com.devenik7.android.genericmusicplayer.utilities.PlaylistUtils;
 
 /**
  * Created by nisha on 12-Aug-17.

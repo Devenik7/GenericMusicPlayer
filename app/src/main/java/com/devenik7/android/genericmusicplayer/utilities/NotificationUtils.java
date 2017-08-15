@@ -1,13 +1,16 @@
-package com.devenik7.android.genericmusicplayer;
+package com.devenik7.android.genericmusicplayer.utilities;
 
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Action;
+
+import com.devenik7.android.genericmusicplayer.activities.MainActivity;
+import com.devenik7.android.genericmusicplayer.MusicPlayerService;
+import com.devenik7.android.genericmusicplayer.broadcast_receivers.NotificationBroadcastReceiver;
 
 /**
  * Created by nisha on 06-Aug-17.

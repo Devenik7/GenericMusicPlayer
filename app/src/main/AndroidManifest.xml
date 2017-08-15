@@ -12,7 +12,7 @@
         android:theme="@style/AppTheme">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".activities.MainActivity"
             android:theme="@style/NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -22,20 +22,18 @@
         </activity>
 
         <activity
-            android:name=".PlaylistActivity"
+            android:name=".activities.PlaylistActivity"
             android:theme="@style/AppTheme" />
 
         <activity
-            android:name=".MultiMusicSelectionActivity"
+            android:name=".activities.MultiMusicSelectionActivity"
             android:theme="@style/AppTheme" />
-
-        <activity android:name=".testing" />
 
         <service
             android:name=".MusicPlayerService"
             android:exported="false" />
 
-        <receiver android:name=".NotificationBroadcastReceiver" />
+        <receiver android:name=".broadcast_receivers.NotificationBroadcastReceiver" />
 
     </application>
 

@@ -1,4 +1,4 @@
-package com.devenik7.android.genericmusicplayer;
+package com.devenik7.android.genericmusicplayer.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,7 +12,6 @@ import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,9 +20,15 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
+import com.devenik7.android.genericmusicplayer.broadcast_receivers.PlayerBroadcastReceiver;
+import com.devenik7.android.genericmusicplayer.Music;
+import com.devenik7.android.genericmusicplayer.MusicPlayerService;
+import com.devenik7.android.genericmusicplayer.PlayerContract;
 import com.devenik7.android.genericmusicplayer.PlayerContract.MusicEntry;
+import com.devenik7.android.genericmusicplayer.loaders.PlaylistContentLoader;
+import com.devenik7.android.genericmusicplayer.R;
+import com.devenik7.android.genericmusicplayer.utilities.MusicPlayerUtils;
 
 import java.util.ArrayList;
 

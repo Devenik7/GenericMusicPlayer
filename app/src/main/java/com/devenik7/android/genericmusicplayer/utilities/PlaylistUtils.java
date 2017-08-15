@@ -1,22 +1,24 @@
-package com.devenik7.android.genericmusicplayer;
+package com.devenik7.android.genericmusicplayer.utilities;
 
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
+
+import com.devenik7.android.genericmusicplayer.MusicDbHelper;
 import com.devenik7.android.genericmusicplayer.PlayerContract.PlaylistEntry;
 
 /**
  * Created by nisha on 11-Aug-17.
  */
 
-class PlaylistUtils {
+public class PlaylistUtils {
 
-    static final String[] PLAYLIST_PROJECTION = {
+    public static final String[] PLAYLIST_PROJECTION = {
             PlaylistEntry.PLAYLIST_ID,
             PlaylistEntry.PLAYLIST_NAME,
             PlaylistEntry.PLAYLIST_DESCRIPTION
     };
 
-    static long addPlayList (MusicDbHelper helper, String title) {
+    public static long addPlayList (MusicDbHelper helper, String title) {
         SQLiteDatabase database = helper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
@@ -25,7 +27,7 @@ class PlaylistUtils {
         return database.insert(PlaylistEntry.TABLE_NAME, null, values);
     }
 
-    static long addPlayList (MusicDbHelper helper, String title, String description) {
+    public static long addPlayList (MusicDbHelper helper, String title, String description) {
         SQLiteDatabase database = helper.getWritableDatabase();
 
         ContentValues values = new ContentValues();

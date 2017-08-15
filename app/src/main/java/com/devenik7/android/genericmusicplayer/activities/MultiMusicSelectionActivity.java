@@ -1,4 +1,4 @@
-package com.devenik7.android.genericmusicplayer;
+package com.devenik7.android.genericmusicplayer.activities;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -22,7 +22,11 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.devenik7.android.genericmusicplayer.loaders.GlobalMusicLoader;
+import com.devenik7.android.genericmusicplayer.MusicDbHelper;
+import com.devenik7.android.genericmusicplayer.PlayerContract;
 import com.devenik7.android.genericmusicplayer.PlayerContract.MusicEntry;
+import com.devenik7.android.genericmusicplayer.R;
 
 import java.util.HashMap;
 

@@ -7,6 +7,8 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 
 import com.devenik7.android.genericmusicplayer.PlayerContract.MusicEntry;
+import com.devenik7.android.genericmusicplayer.utilities.MusicPlayerUtils;
+import com.devenik7.android.genericmusicplayer.utilities.NotificationUtils;
 
 import android.support.annotation.Nullable;
 import android.widget.Toast;
