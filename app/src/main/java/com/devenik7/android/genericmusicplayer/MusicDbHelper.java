@@ -30,10 +30,10 @@ public class MusicDbHelper extends SQLiteOpenHelper {
         String SQL_CREATE_MUSIC_TABLE = "CREATE TABLE " + MusicEntry.TABLE_NAME + " ("
                 + MusicEntry.MUSIC_ID + " INTEGER NOT NULL, "
                 + MusicEntry.MUSIC_TITLE + " TEXT NOT NULL, "
-                + MusicEntry.MUSIC_DISPLAY_NAME + " TEXT NOT NULL, "
                 + MusicEntry.MUSIC_PATH + " TEXT NOT NULL, "
                 + MusicEntry.MUSIC_DURATION + " INTEGER NOT NULL, "
                 + MusicEntry.MUSIC_ARTIST + " TEXT, "
+                + MusicEntry.MUSIC_ALBUM + " TEXT, "
                 + MusicEntry.MUSIC_FREQUENCY + " INTEGER DEFAULT 0, "
                 + MusicEntry.MUSIC_RATING + " INTEGER DEFAULT 0"
                 + ")";
@@ -49,12 +49,15 @@ public class MusicDbHelper extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(SQL_CREATE_PLAYLIST_TABLE);
 
         String SQL_CREATE_MUSIC_IN_PLAYLIST_TABLE = "CREATE TABLE " + MusicInPlaylistEntry.TABLE_NAME + " ("
+                + PlaylistEntry.PLAYLIST_NAME + " TEXT NOT NULL, "
                 + MusicEntry.MUSIC_ID + " INTEGER NOT NULL, "
                 + MusicEntry.MUSIC_TITLE + " TEXT NOT NULL, "
                 + MusicEntry.MUSIC_PATH + " TEXT NOT NULL, "
                 + MusicEntry.MUSIC_DURATION + " INTEGER NOT NULL, "
                 + MusicEntry.MUSIC_ARTIST + " TEXT, "
-                + PlaylistEntry.PLAYLIST_NAME + " TEXT NOT NULL"
+                + MusicEntry.MUSIC_ALBUM + " TEXT, "
+                + MusicInPlaylistEntry.TIME_ADDED + " LONG NOT NULL, "
+                + "UNIQUE (" + PlaylistEntry.PLAYLIST_NAME + ", " + MusicEntry.MUSIC_ID + ")"
                 + ")";
 
         sqLiteDatabase.execSQL(SQL_CREATE_MUSIC_IN_PLAYLIST_TABLE);

@@ -16,8 +16,8 @@ class PlayerContract {
         final static String TABLE_NAME = "main_contents";
         final static String MUSIC_ID = MediaStore.Audio.Media._ID;
         final static String MUSIC_TITLE = MediaStore.Audio.Media.TITLE;
-        final static String MUSIC_DISPLAY_NAME = MediaStore.Audio.Media.DISPLAY_NAME;
         final static String MUSIC_ARTIST = MediaStore.Audio.Media.ARTIST;
+        final static String MUSIC_ALBUM = MediaStore.Audio.Media.ALBUM;
         final static String MUSIC_PATH = MediaStore.Audio.Media.DATA;
         final static String MUSIC_DURATION = MediaStore.Audio.Media.DURATION;
         final static String MUSIC_FREQUENCY = "frequency";
@@ -41,6 +41,7 @@ class PlayerContract {
     static class MusicInPlaylistEntry implements BaseColumns {
 
         final static String TABLE_NAME = "music_in_playlists";
+        final static String TIME_ADDED = "time_added";
 
     }
 }

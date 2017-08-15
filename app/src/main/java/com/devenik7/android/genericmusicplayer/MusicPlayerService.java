@@ -2,12 +2,9 @@ package com.devenik7.android.genericmusicplayer;
 
 import android.app.Service;
 import android.content.Intent;
-import android.database.Cursor;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.IBinder;
-import android.provider.MediaStore;
 
 import com.devenik7.android.genericmusicplayer.PlayerContract.MusicEntry;
 
@@ -15,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
 
 /**
  * Created by nisha on 06-Aug-17.
@@ -24,10 +22,8 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
 
     AudioManager manager;
     MediaPlayer player;
-    Cursor playList;
-    Uri currentPlayListUri;
+    ArrayList<Music> playList1;
     int currentTrackPosition;
-    int currentTrackID;
     String currentTrackTitle;
     String currentTrackArtist;
 
@@ -47,20 +43,18 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         player.setOnCompletionListener(this);
         player.setOnPreparedListener(this);
         player.setOnErrorListener(this);
-        playList = null;
+        playList1 = new ArrayList<>();
         currentTrackPosition = 0;
-        currentTrackID = 0;
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         String action = intent.getAction();
         switch (action) {
-            case MusicPlayerUtils.START_ACTION:
-                Uri uri = intent.getParcelableExtra(MusicPlayerUtils.CONTENT_URI);
-                int id = intent.getIntExtra(MusicEntry.MUSIC_ID, 0);
-                int position = intent.getIntExtra(MusicPlayerUtils.POSITION_IN_LIST, 0);
-                playMusicWithDetails(uri, id, position);
+            case MusicPlayerUtils.START_PLAYLIST:
+                playList1 = intent.getParcelableArrayListExtra("playlist");
+                int position1 = intent.getIntExtra(MusicPlayerUtils.POSITION_IN_LIST, 0);
+                startPlaylistAtPosition(position1);
                 break;
             case MusicPlayerUtils.PLAY_ACTION:
                 resumeCurrentTrack();
@@ -85,18 +79,10 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         return START_NOT_STICKY;
     }
 
-    private void playMusicWithDetails(Uri uri, int id, int position) {
-        if (uri.equals(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI)) {
-            currentTrackPosition = position;
-            currentTrackID = id;
-            if (playList != null && currentPlayListUri == uri) {
-                playList.moveToPosition(currentTrackPosition);
-                startCurrentMusic();
-            } else {
-                playList = getContentResolver().query(uri, MusicPlayerUtils.EXTERNAL_MUSIC_PROJECTION, MusicPlayerUtils.EXTERNAL_MUSIC_SELECTION, null, MusicPlayerUtils.EXTERNAL_MUSIC_SORT_ORDER);
-                playList.moveToPosition(currentTrackPosition);
-                startCurrentMusic();
-            }
+    private void startPlaylistAtPosition (int position) {
+        currentTrackPosition = position;
+        if (playList1 != null && playList1.size() > 0) {
+            startCurrentMusic();
         }
     }
 
@@ -117,28 +103,19 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     }
 
     private void playPreviousTrack() {
-        if (playList == null || playList.getCount() < 1) return;
-        if (player == null) player = new MediaPlayer();
-        if (playList.getPosition() == 0)
-            playList.moveToLast();
-        else
-            playList.moveToPrevious();
+        if (playList1 == null || playList1.size() < 1) return;
+        currentTrackPosition = (currentTrackPosition-1 < 0)? playList1.size()-1: currentTrackPosition-1;
         startCurrentMusic();
     }
 
     private void playNextTrack() {
-        if (playList == null || playList.getCount() < 1) return;
-        if (player == null) player = new MediaPlayer();
-        if (!playList.moveToNext()) {
-            playList.moveToPosition(0);
-        }
-        startCurrentMusic();
+        onCompletion(player);
     }
 
     private void startCurrentMusic() {
-        currentTrackTitle = playList.getString(playList.getColumnIndex(MusicEntry.MUSIC_TITLE));
-        currentTrackArtist = playList.getString(playList.getColumnIndex(MusicEntry.MUSIC_ARTIST));
-        String path = playList.getString(playList.getColumnIndex(MusicEntry.MUSIC_PATH));
+        currentTrackTitle = playList1.get(currentTrackPosition).getTitle();
+        currentTrackArtist = playList1.get(currentTrackPosition).getArtist();
+        String path = playList1.get(currentTrackPosition).getDataPath();
         try {
             player.reset();
             player.setDataSource(path);
@@ -165,12 +142,8 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
     @Override
     public void onCompletion(MediaPlayer mediaPlayer) {
         mediaPlayer.reset();
-        if (playList != null) {
-            if (!playList.moveToNext()) {
-                playList.moveToPosition(0);
-            }
-            currentTrackPosition = playList.getPosition();
-            currentTrackID = playList.getInt(playList.getColumnIndex(MusicEntry.MUSIC_ID));
+        if (playList1 != null && playList1.size() > 0) {
+            currentTrackPosition = (currentTrackPosition+1 >= playList1.size())? 0: currentTrackPosition+1;
             startCurrentMusic();
         }
     }
@@ -198,7 +171,6 @@ public class MusicPlayerService extends Service implements MediaPlayer.OnComplet
         currentTrackTitle = null;
         sendUpdateBroadcast();
         manager.abandonAudioFocus(this);
-        playList.close();
         player.release();
         stopSelf();
     }

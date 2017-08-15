@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:animateLayoutChanges="true"
+    android:background="@android:color/white"
+    android:clickable="true"
+    android:elevation="16dp"
+    android:orientation="horizontal"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_weight="1"
+        android:animateLayoutChanges="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/player_status_title_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:text="Select a Song"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/player_status_artist_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="12sp"
+            android:visibility="gone" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/player_status_image_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@android:drawable/ic_media_play"
+        android:tint="@color/colorPrimary" />
+
+</LinearLayout>

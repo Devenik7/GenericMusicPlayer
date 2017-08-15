@@ -2,6 +2,7 @@ package com.devenik7.android.genericmusicplayer;
 
 import android.content.AsyncTaskLoader;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.support.v4.content.Loader;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.CursorAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -33,6 +35,12 @@ public class PlaylistsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.playlists_fragment, container, false);
         playlistsView = (ListView) rootView.findViewById(R.id.playlists_list_view);
+        playlistsView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                openPlayList(position);
+            }
+        });
         addPlayListButton = (FloatingActionButton) rootView.findViewById(R.id.add_playlist_button);
         addPlayListButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +64,15 @@ public class PlaylistsFragment extends Fragment {
         setPlaylistContent();
 
         return rootView;
+    }
+
+    private void openPlayList(int position) {
+        Cursor cursor = adapter.getCursor();
+        cursor.moveToPosition(position);
+        String playlistName = cursor.getString(cursor.getColumnIndex(PlayerContract.PlaylistEntry.PLAYLIST_NAME));
+        Intent intent = new Intent(getActivity(), PlaylistActivity.class);
+        intent.putExtra(PlayerContract.PlaylistEntry.PLAYLIST_NAME, playlistName);
+        startActivity(intent);
     }
 
     private void setPlaylistContent() {

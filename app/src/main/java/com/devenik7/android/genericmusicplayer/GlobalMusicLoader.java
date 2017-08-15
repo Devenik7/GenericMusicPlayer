@@ -27,6 +27,7 @@ class GlobalMusicLoader extends android.support.v4.content.AsyncTaskLoader<Curso
                 MediaStore.Audio.Media.TITLE,
                 MediaStore.Audio.Media.DISPLAY_NAME,
                 MediaStore.Audio.Media.ARTIST,
+                MediaStore.Audio.Media.ALBUM,
                 MediaStore.Audio.Media.DATA,
                 MediaStore.Audio.Media.DURATION
         };

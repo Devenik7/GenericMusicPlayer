@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ListView
+        android:id="@+id/playlist_content_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clipToPadding="false"
+        android:paddingBottom="128dp" />
+
+    <include
+        android:id="@+id/empty_view"
+        layout="@layout/empty_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:visibility="gone" />
+
+    <include
+        android:id="@+id/player_status_view"
+        layout="@layout/player_status_view" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/add_music_to_playlist_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/player_status_view"
+        android:layout_alignParentRight="true"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add_black_36dp"
+        android:tint="@android:color/white" />
+
+</RelativeLayout>

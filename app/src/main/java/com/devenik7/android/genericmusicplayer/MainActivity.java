@@ -12,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerTabStrip;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,18 +20,21 @@ import android.widget.TextView;
 
 import com.astuetz.PagerSlidingTabStrip;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
     final int READ_EXTERNAL_STORAGE_REQUEST_CODE = 11;
 
     ViewPager mainViewPager;
     PagerSlidingTabStrip strip;
+
+    MusicDbHelper helper;
+
     View playerStatusView;
     TextView titleView;
     TextView artistView;
     ImageView isPlayingView;
-
-    MusicDbHelper helper;
     PlayerBroadcastReceiver playerBroadcastReceiver;
 
     @Override
@@ -51,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void setupUI() {
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+
         mainViewPager = (ViewPager) findViewById(R.id.main_view_pager);
         strip = (PagerSlidingTabStrip) findViewById(R.id.main_pager_strip);
 
@@ -58,6 +64,12 @@ public class MainActivity extends AppCompatActivity {
         titleView = (TextView) playerStatusView.findViewById(R.id.player_status_title_view);
         artistView = (TextView) playerStatusView.findViewById(R.id.player_status_artist_view);
         isPlayingView = (ImageView) playerStatusView.findViewById(R.id.player_status_image_view);
+        isPlayingView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pauseOrPlayMusic(v);
+            }
+        });
     }
 
     private void setupPagerAndStrip() {
@@ -154,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
 
         registerPlayerBroadcastReceiver();
+        requestInfoFromPlayerService();
     }
 
     @Override

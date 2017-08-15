@@ -17,6 +17,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+
 /**
  * Created by nisha on 12-Aug-17.
  */
@@ -55,11 +57,21 @@ public class GlobalMusicFragment extends Fragment implements LoaderManager.Loade
     }
 
     private void startMusic(int position) {
-        globalList.moveToPosition(position);
+        ArrayList<Music> playlist = new ArrayList<>();
+        globalList.moveToFirst();
+        do {
+            playlist.add(new Music(
+                    globalList.getInt(globalList.getColumnIndex(MediaStore.Audio.Media._ID)),
+                    globalList.getString(globalList.getColumnIndex(MediaStore.Audio.Media.TITLE)),
+                    globalList.getString(globalList.getColumnIndex(MediaStore.Audio.Media.ARTIST)),
+                    globalList.getString(globalList.getColumnIndex(MediaStore.Audio.Media.ALBUM)),
+                    globalList.getString(globalList.getColumnIndex(MediaStore.Audio.Media.DATA)),
+                    globalList.getInt(globalList.getColumnIndex(MediaStore.Audio.Media.DURATION))
+            ));
+        } while (globalList.moveToNext());
         Intent intent = new Intent(getActivity(), MusicPlayerService.class);
-        intent.setAction(MusicPlayerUtils.START_ACTION);
-        intent.putExtra(MusicPlayerUtils.CONTENT_URI, MediaStore.Audio.Media.EXTERNAL_CONTENT_URI);
-        intent.putExtra(PlayerContract.MusicEntry.MUSIC_ID, globalList.getInt(globalList.getColumnIndex(PlayerContract.MusicEntry.MUSIC_ID)));
+        intent.setAction(MusicPlayerUtils.START_PLAYLIST);
+        intent.putParcelableArrayListExtra("playlist", playlist);
         intent.putExtra(MusicPlayerUtils.POSITION_IN_LIST, position);
         getActivity().startService(intent);
     }
@@ -102,5 +114,11 @@ public class GlobalMusicFragment extends Fragment implements LoaderManager.Loade
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         globalMusicListView.setAdapter(new SimpleMusicAdapter(getActivity(), null));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        globalList.close();
     }
 }
